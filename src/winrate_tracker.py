@@ -6,6 +6,7 @@ LOSS = 'loss'
 
 def updateWinrate(map_name, result):
     try:
+        # TODO path name needs to be dynamic somehow
         # Load existing winrate data
         winrate_data = pd.read_csv('../db./winrate.csv')
     except FileNotFoundError:
