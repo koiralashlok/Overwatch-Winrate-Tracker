@@ -1,3 +1,4 @@
 src/etl/__pycache__/add_winrate_column.cpython-311.pyc
 src/etl/__pycache__/perform_etl.cpython-311.pyc
+db
 db/winrate.csv
