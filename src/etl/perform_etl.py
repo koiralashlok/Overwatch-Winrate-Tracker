@@ -21,7 +21,6 @@ def add_winrate_column():
 
 def saveDf():
     global WINRATE_DF
-    print(WINRATE_DF)
     print("Saving Changes...")
     WINRATE_DF.to_csv('../Winrate Tracker/db./winrate.csv', index=False)
 
