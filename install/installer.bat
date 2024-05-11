@@ -5,7 +5,7 @@
 echo Installing Winrate Tracker...
 set "basepath=%~dp0..\Winrate Tracker"
 @REM TODO do away with the warning
-pyinstaller ..\src\winrate_tracker.py --distpath "%basepath%" --workpath ..\build --specpath ..\app_spec --clean --name "Winrate Tracker" --log-level ERROR --onefile
+pyinstaller ..\src\winrate_tracker.py --distpath "%basepath%" --workpath ..\build --specpath ..\app_spec --clean --name "Winrate Tracker" --log-level ERROR --onefile --icon=%~dp0..\icons\winrate_tracker.ico
 
 @REM Create a db folder if it does not exist
 @echo off
