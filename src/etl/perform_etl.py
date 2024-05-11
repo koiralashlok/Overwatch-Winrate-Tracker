@@ -6,26 +6,24 @@ def readDf(winrateDf: pd.DataFrame):
     global WINRATE_DF
 
     if not winrateDf is None:
-        print("in if")
         WINRATE_DF = winrateDf
         return
-    else: # else should be unnecessary
-        print("in else")
+    else:
         # Read the CSV file
-        WINRATE_DF = pd.read_csv('../../db./winrate.csv')
-        print(WINRATE_DF)
+        WINRATE_DF = pd.read_csv('../Winrate Tracker/db./winrate.csv')
 
 
 def add_winrate_column():
     global WINRATE_DF
     print("Adding winrate column...")
-    WINRATE_DF['winrate'] = WINRATE_DF['num_of_wins'] * 100 / (WINRATE_DF['num_of_wins'] + WINRATE_DF['num_of_losses'])
+    WINRATE_DF['winrate'] = WINRATE_DF['wins'] * 100 / (WINRATE_DF['wins'] + WINRATE_DF['losses'])
 
 
 def saveDf():
     global WINRATE_DF
+    print(WINRATE_DF)
     print("Saving Changes...")
-    WINRATE_DF.to_csv('../../db./winrate.csv', index=False)
+    WINRATE_DF.to_csv('../Winrate Tracker/db./winrate.csv', index=False)
 
 
 def main(winrateDf: pd.DataFrame = None):
