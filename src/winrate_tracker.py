@@ -14,28 +14,35 @@ def updateWinrate(map_name, result):
         winrate_data = pd.DataFrame(columns=['map', 'wins', 'losses'])
 
     # Update winrate data
-    if not winrate_data.empty:
-        map_row = winrate_data[winrate_data['map'] == map_name]
-        if not map_row.empty:
-            index = map_row.index[0]
-            if result.lower() == WIN:
-                winrate_data.at[index, 'wins'] += 1
-            elif result.lower() == LOSS:
-                winrate_data.at[index, 'losses'] += 1
-        else:
-            if result.lower() == WIN:
-                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})])
-            elif result.lower() == LOSS:
-                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})])
+    # if not winrate_data.empty:
+    map_row = winrate_data[winrate_data['map'] == map_name]
+    if not map_row.empty:
+        index = map_row.index[0]
+        if result.lower() == WIN:
+            winrate_data.at[index, 'wins'] += 1
+        elif result.lower() == LOSS:
+            winrate_data.at[index, 'losses'] += 1
+        # TODO Can we use the ETL function here?
+        winrate_data.at[index, 'winrate'] = (winrate_data.at[index, 'wins'] * 100) / (winrate_data.at[index, 'wins'] + winrate_data.at[index, 'losses'])
     else:
         if result.lower() == WIN:
-            winrate_data = pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})
+            append_df = pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})
         elif result.lower() == LOSS:
-            winrate_data = pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})
+            append_df = pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})
+        
+        # Perform ETL
+        append_df = etl.main(append_df)
+        winrate_data = pd.concat([winrate_data, append_df], ignore_index=True)
+    
+    # else:
+    #     if result.lower() == WIN:
+    #         winrate_data = pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})
+    #     elif result.lower() == LOSS:
+    #         winrate_data = pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})
 
     # TODO - Remove this line, instead calcualte winrate inside the update function
     # Perform ETL
-    winrate_data = etl.main(winrate_data)
+    # winrate_data = etl.main(winrate_data)
     # Write updated winrate data to CSV
     winrate_data.to_csv('db./winrate.csv', index=False)
 
@@ -55,7 +62,7 @@ def viewWinrateByMap(map_name):
         if not map_row.empty:
             print(map_row.to_string(index=False))
         else:
-            print("Map not found.")
+            print(f"No data found for map {map_name}")
     except FileNotFoundError:
         print("Winrate data not found.")
 
@@ -70,6 +77,8 @@ def viewAggregate():
 def printMenu():
     print("Enter map name and result (win/loss), separated by space.")
     print("Type 'view' to see the current winrate data.")
+    print("Type 'view mapname' to see stats for a particular map.")
+    print("Type 'view aggregate' to see the aggregate winrate.")
     print("Type 'exit' to quit.")
 
 def main():
