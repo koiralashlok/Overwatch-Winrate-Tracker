@@ -7,10 +7,11 @@ LOSS = 'loss'
 def updateWinrate(map_name, result):
     try:
         # TODO path name needs to be dynamic somehow
+        # TODO avoid reading the df over and over (maybe use a global variable?)
         # Load existing winrate data
-        winrate_data = pd.read_csv('../db./winrate.csv')
+        winrate_data = pd.read_csv('db./winrate.csv')
     except FileNotFoundError:
-        winrate_data = pd.DataFrame(columns=['map', 'num_of_wins', 'num_of_losses'])
+        winrate_data = pd.DataFrame(columns=['map', 'wins', 'losses'])
 
     # Update winrate data
     if not winrate_data.empty:
@@ -18,30 +19,30 @@ def updateWinrate(map_name, result):
         if not map_row.empty:
             index = map_row.index[0]
             if result.lower() == WIN:
-                winrate_data.at[index, 'num_of_wins'] += 1
+                winrate_data.at[index, 'wins'] += 1
             elif result.lower() == LOSS:
-                winrate_data.at[index, 'num_of_losses'] += 1
+                winrate_data.at[index, 'losses'] += 1
         else:
             if result.lower() == WIN:
-                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'num_of_wins': [1], 'num_of_losses': [0]})])
+                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})])
             elif result.lower() == LOSS:
-                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'num_of_wins': [0], 'num_of_losses': [1]})])
+                winrate_data = pd.concat([winrate_data, pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})])
     else:
         if result.lower() == WIN:
-            winrate_data = pd.DataFrame({'map': [map_name], 'num_of_wins': [1], 'num_of_losses': [0]})
+            winrate_data = pd.DataFrame({'map': [map_name], 'wins': [1], 'losses': [0]})
         elif result.lower() == LOSS:
-            winrate_data = pd.DataFrame({'map': [map_name], 'num_of_wins': [0], 'num_of_losses': [1]})
+            winrate_data = pd.DataFrame({'map': [map_name], 'wins': [0], 'losses': [1]})
 
     # TODO - Remove this line, instead calcualte winrate inside the update function
     # Perform ETL
     winrate_data = etl.main(winrate_data)
     # Write updated winrate data to CSV
-    winrate_data.to_csv('../db./winrate.csv', index=False)
+    winrate_data.to_csv('db./winrate.csv', index=False)
 
 def viewWinrate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('../db./winrate.csv')
+        winrate_data = pd.read_csv('db./winrate.csv')
         print(winrate_data.to_string(index=False))
     except FileNotFoundError:
         print("Winrate data not found.")
@@ -49,7 +50,7 @@ def viewWinrate():
 def viewWinrateByMap(map_name):
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('../db./winrate.csv')
+        winrate_data = pd.read_csv('db./winrate.csv')
         map_row = winrate_data[winrate_data['map'] == map_name]
         if not map_row.empty:
             print(map_row.to_string(index=False))
@@ -61,8 +62,8 @@ def viewWinrateByMap(map_name):
 def viewAggregate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('../db./winrate.csv')
-        print("Aggregate winrate: {:.2f}%".format((winrate_data['num_of_wins'].sum() * 100) / (winrate_data['num_of_wins'].sum() + winrate_data['num_of_losses'].sum())))
+        winrate_data = pd.read_csv('db./winrate.csv')
+        print("Aggregate winrate: {:.2f}%".format((winrate_data['wins'].sum() * 100) / (winrate_data['wins'].sum() + winrate_data['losses'].sum())))
     except FileNotFoundError:
         print("Winrate data not found.")
 
