@@ -58,6 +58,21 @@ def main(winrateDf: pd.DataFrame = None):
     # TODO dynamic path (path before if)
     PATH = '../Winrate Tracker/db/winrate.csv' if not CALLED_FROM_CLI else pathFromCli
     
+    # TODO ensure try except block works
+    if not CALLED_FROM_CLI:
+        try:
+            PATH = '../Winrate Tracker/db/winrate.csv'
+            readDf(winrateDf)
+        except FileNotFoundError:
+            try:
+                PATH = '../db/winrate.csv'
+                readDf(winrateDf)
+            except FileNotFoundError:
+                print("No winrate data found")
+                return None
+    else:
+        PATH = pathFromCli
+    
     # Read the CSV file
     readDf(winrateDf)
 
