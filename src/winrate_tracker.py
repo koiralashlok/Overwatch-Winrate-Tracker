@@ -36,6 +36,7 @@ def updateWinrate(map_name, result):
     # Map already exists in db simply update stats
     if not map_row.empty:
         winrate_data = winrate_data.drop(map_row.index)
+        # TODO the updates (lines 41 and 43) result in SettingWithCopyWarning
         if result.lower() == WIN:
             map_row['wins'] += 1
         elif result.lower() == LOSS:

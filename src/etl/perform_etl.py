@@ -40,7 +40,6 @@ def saveDf():
 #       winrate data is read from path
 #       ETL result is written
 def main(winrateDf: pd.DataFrame = None):
-    # TODO make this run standalone too (if etl.main() is run)
     global WINRATE_DF
     global PATH
     global CALLED_FROM_CLI
