@@ -10,13 +10,7 @@ global PATH
 def readWinrateData():
     global WINRATE_DF
 
-    # try:
-        # Load existing winrate data
     WINRATE_DF = pd.read_csv(PATH)
-    # Bubble up other exceptions (ex: permissions)
-    # except FileNotFoundError:
-    #     # Just a fail-safe (batch file should make the csv)
-    #     WINRATE_DF = pd.DataFrame(columns=['map', 'wins', 'losses'])
 
 
 def saveWinrateData(winrate_df):
@@ -92,10 +86,11 @@ def main():
     print("Welcome to Winrate Tracker!")
     printMenu()
 
-    # TODO ensure try except block works
     PATH = 'db/winrate.csv'
+    # Just as a fail-safe
     try:
         readWinrateData()
+    # Bubble up other exceptions (ex: permissions)
     except FileNotFoundError:
         try:
             PATH = '../db/winrate.csv'
