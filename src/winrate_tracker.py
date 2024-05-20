@@ -24,7 +24,7 @@ def saveWinrateData(winrate_df):
 
     # Update df and csv
     WINRATE_DF = winrate_df
-    WINRATE_DF.to_csv(PATH)
+    WINRATE_DF.to_csv(PATH, index=False)
 
 
 def updateWinrate(map_name, result):
@@ -68,8 +68,14 @@ def viewWinrateByMap(map_name):
 
 
 def viewAggregate():
-    # TODO: Add more aggregate stats
-    print("Aggregate winrate: {:.2f}%".format((WINRATE_DF['wins'].sum() * 100) / (WINRATE_DF['wins'].sum() + WINRATE_DF['losses'].sum())))
+    totalWins = WINRATE_DF['wins'].sum()
+    totalLosses = WINRATE_DF['losses'].sum()
+    totalPlayed = totalWins + totalLosses
+
+    print("Games played: {0}".format(totalPlayed))
+    print("Wins: {0}".format(totalWins))
+    print("Losses: {0}".format(totalLosses))
+    print("Overall winrate: {:.2f}%".format((WINRATE_DF['wins'].sum() * 100) / (WINRATE_DF['wins'].sum() + WINRATE_DF['losses'].sum())))
 
 
 def printMenu():
