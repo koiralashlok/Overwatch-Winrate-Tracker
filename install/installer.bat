@@ -19,7 +19,7 @@ if not exist "%basepath%\%dbFolder%" (
 )
 
 @REM Add the etl columns (so that we can remove)
-python ..\src\etl\perform_etl.py
+python ..\src\etl\perform_etl.py "%basepath%\%dbFolder%\winrate.csv"
 
 @REM Developer Mode so don't delete build and app_spec folders
 if not "%1"=="true" (
