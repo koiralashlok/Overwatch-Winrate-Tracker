@@ -68,11 +68,8 @@ def viewWinrateByMap(map_name):
 
 
 def viewAggregate():
-    try:
-        # TODO: Add more aggregate stats
-        print("Aggregate winrate: {:.2f}%".format((WINRATE_DF['wins'].sum() * 100) / (WINRATE_DF['wins'].sum() + WINRATE_DF['losses'].sum())))
-    except FileNotFoundError:
-        print("Winrate data not found.")
+    # TODO: Add more aggregate stats
+    print("Aggregate winrate: {:.2f}%".format((WINRATE_DF['wins'].sum() * 100) / (WINRATE_DF['wins'].sum() + WINRATE_DF['losses'].sum())))
 
 
 def printMenu():
