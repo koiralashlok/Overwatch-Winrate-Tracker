@@ -4,17 +4,30 @@ import etl.perform_etl as etl
 WIN = 'win'
 LOSS = 'loss'
 
-def updateWinrate(map_name, result):
-    try:
-        # TODO path name needs to be dynamic somehow
-        # TODO avoid reading the df over and over (maybe use a global variable?)
-        # Load existing winrate data
-        winrate_data = pd.read_csv('db/winrate.csv')
-    except FileNotFoundError:
-        winrate_data = pd.DataFrame(columns=['map', 'wins', 'losses'])
+global WINRATE_DF
+global PATH
 
-    # Update winrate data
-    # if not winrate_data.empty:
+def readWinrateData():
+    global WINRATE_DF
+
+    try:
+        # Load existing winrate data
+        WINRATE_DF = pd.read_csv(PATH)
+    except FileNotFoundError:
+        # Just a fail-safe (batch file should make the csv)
+        WINRATE_DF = pd.DataFrame(columns=['map', 'wins', 'losses'])
+
+def saveWinrateData(winrate_df):
+    global WINRATE_DF
+
+    # Update df and csv
+    WINRATE_DF = winrate_df
+    WINRATE_DF.to_csv(PATH)
+
+def updateWinrate(map_name, result):
+    global WINRATE_DF
+
+    winrate_data = WINRATE_DF
     map_row = winrate_data[winrate_data['map'] == map_name]
     if not map_row.empty:
         winrate_data = winrate_data.drop(map_row.index)
@@ -31,21 +44,19 @@ def updateWinrate(map_name, result):
     # Perform ETL (Transform)
     map_row = etl.main(map_row)
     winrate_data = pd.concat([winrate_data, map_row], ignore_index=True)
-    winrate_data.to_csv('db/winrate.csv', index=False)
+    saveWinrateData(winrate_data)
 
 def viewWinrate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db/winrate.csv')
-        print(winrate_data.to_string(index=False))
+        print(WINRATE_DF.to_string(index=False))
     except FileNotFoundError:
         print("Winrate data not found.")
 
 def viewWinrateByMap(map_name):
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db/winrate.csv')
-        map_row = winrate_data[winrate_data['map'] == map_name]
+        map_row = WINRATE_DF[WINRATE_DF['map'] == map_name]
         if not map_row.empty:
             print(map_row.to_string(index=False))
         else:
@@ -56,8 +67,7 @@ def viewWinrateByMap(map_name):
 def viewAggregate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db/winrate.csv')
-        print("Aggregate winrate: {:.2f}%".format((winrate_data['wins'].sum() * 100) / (winrate_data['wins'].sum() + winrate_data['losses'].sum())))
+        print("Aggregate winrate: {:.2f}%".format((WINRATE_DF['wins'].sum() * 100) / (WINRATE_DF['wins'].sum() + WINRATE_DF['losses'].sum())))
     except FileNotFoundError:
         print("Winrate data not found.")
 
@@ -69,8 +79,13 @@ def printMenu():
     print("Type 'exit' to quit.")
 
 def main():
+    global PATH, WINRATE_DF
     print("Welcome to Winrate Tracker!")
     printMenu()
+
+    # TODO path name needs to be dynamic somehow
+    PATH = 'db/winrate.csv'
+    readWinrateData()
 
     while True:
         user_input = input("Enter input: ")

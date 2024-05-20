@@ -1,5 +1,6 @@
 import pandas as pd
 
+global PATH
 global WINRATE_DF
 
 def readDf(winrateDf: pd.DataFrame):
@@ -10,7 +11,7 @@ def readDf(winrateDf: pd.DataFrame):
         return
     else:
         # Read the CSV file
-        WINRATE_DF = pd.read_csv('../Winrate Tracker/db/winrate.csv')
+        WINRATE_DF = pd.read_csv(PATH)
 
 
 def add_winrate_column():
@@ -22,12 +23,15 @@ def add_winrate_column():
 def saveDf():
     global WINRATE_DF
     print("Saving Changes...")
-    WINRATE_DF.to_csv('../Winrate Tracker/db/winrate.csv', index=False)
+    WINRATE_DF.to_csv(PATH, index=False)
 
 
 def main(winrateDf: pd.DataFrame = None):
     # TODO make this run standalone too (if etl.main() is run)
     global WINRATE_DF
+    global PATH
+
+    PATH = '../Winrate Tracker/db/winrate.csv'
     
     # Read the CSV file
     readDf(winrateDf)
