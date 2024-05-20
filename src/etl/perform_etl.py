@@ -1,14 +1,15 @@
 import pandas as pd
+import sys
 
 global PATH
 global WINRATE_DF
-
+global CALLED_FROM_CLI
 
 def readDf(winrateDf: pd.DataFrame):
     global WINRATE_DF
 
     # df provided -> called from code
-    if not winrateDf is None:
+    if not CALLED_FROM_CLI:
         WINRATE_DF = winrateDf
         return
     # called from cli
@@ -32,19 +33,31 @@ def saveDf():
 
 
 # Two ways this function should be called
-#   1. When called from code, winrateDf must be provided
+#   1. When called from code, winrateDf must be provided not path
 #       winrate data is not read, instead given df is used
 #       ETL result is returned not written to any path
-#   2. When called from CLI, winrate df is null
-#       winrate data is read from PATH
+#   2. When called from CLI, path is provided not winrateDf
+#       winrate data is read from path
 #       ETL result is written
 def main(winrateDf: pd.DataFrame = None):
     # TODO make this run standalone too (if etl.main() is run)
     global WINRATE_DF
     global PATH
+    global CALLED_FROM_CLI
 
-    # TODO dynamic path
-    PATH = '../Winrate Tracker/db/winrate.csv'
+    CALLED_FROM_CLI = winrateDf is None
+
+    try:
+        # try getting first cli argument
+        pathFromCli = sys.argv[1]
+    except:
+        # no cli argument and no df provided
+        if CALLED_FROM_CLI:
+            raise ValueError("If called from CLI, please provide `path` as an argument else provide `winrateDf`")
+    # At this point, either path is not None OR winrateDf is not None
+
+    # TODO dynamic path (path before if)
+    PATH = '../Winrate Tracker/db/winrate.csv' if not CALLED_FROM_CLI else pathFromCli
     
     # Read the CSV file
     readDf(winrateDf)
@@ -53,7 +66,7 @@ def main(winrateDf: pd.DataFrame = None):
     add_winrate_column()
 
     # Save the updated DataFrame
-    if not winrateDf is None: 
+    if not CALLED_FROM_CLI: 
         return WINRATE_DF
     else:
         saveDf()
