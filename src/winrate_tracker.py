@@ -9,7 +9,7 @@ def updateWinrate(map_name, result):
         # TODO path name needs to be dynamic somehow
         # TODO avoid reading the df over and over (maybe use a global variable?)
         # Load existing winrate data
-        winrate_data = pd.read_csv('db./winrate.csv')
+        winrate_data = pd.read_csv('db/winrate.csv')
     except FileNotFoundError:
         winrate_data = pd.DataFrame(columns=['map', 'wins', 'losses'])
 
@@ -44,12 +44,12 @@ def updateWinrate(map_name, result):
     # Perform ETL
     # winrate_data = etl.main(winrate_data)
     # Write updated winrate data to CSV
-    winrate_data.to_csv('db./winrate.csv', index=False)
+    winrate_data.to_csv('db/winrate.csv', index=False)
 
 def viewWinrate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db./winrate.csv')
+        winrate_data = pd.read_csv('db/winrate.csv')
         print(winrate_data.to_string(index=False))
     except FileNotFoundError:
         print("Winrate data not found.")
@@ -57,7 +57,7 @@ def viewWinrate():
 def viewWinrateByMap(map_name):
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db./winrate.csv')
+        winrate_data = pd.read_csv('db/winrate.csv')
         map_row = winrate_data[winrate_data['map'] == map_name]
         if not map_row.empty:
             print(map_row.to_string(index=False))
@@ -69,7 +69,7 @@ def viewWinrateByMap(map_name):
 def viewAggregate():
     try:
         # Load and print winrate data
-        winrate_data = pd.read_csv('db./winrate.csv')
+        winrate_data = pd.read_csv('db/winrate.csv')
         print("Aggregate winrate: {:.2f}%".format((winrate_data['wins'].sum() * 100) / (winrate_data['wins'].sum() + winrate_data['losses'].sum())))
     except FileNotFoundError:
         print("Winrate data not found.")

@@ -10,7 +10,7 @@ def readDf(winrateDf: pd.DataFrame):
         return
     else:
         # Read the CSV file
-        WINRATE_DF = pd.read_csv('../Winrate Tracker/db./winrate.csv')
+        WINRATE_DF = pd.read_csv('../Winrate Tracker/db/winrate.csv')
 
 
 def add_winrate_column():
@@ -22,7 +22,7 @@ def add_winrate_column():
 def saveDf():
     global WINRATE_DF
     print("Saving Changes...")
-    WINRATE_DF.to_csv('../Winrate Tracker/db./winrate.csv', index=False)
+    WINRATE_DF.to_csv('../Winrate Tracker/db/winrate.csv', index=False)
 
 
 def main(winrateDf: pd.DataFrame = None):
