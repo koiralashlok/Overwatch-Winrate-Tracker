@@ -17,8 +17,11 @@ from pathlib import Path
 # TODO warning in the console on ngrok page
 url = ""
 with open('../secrets.json', 'r') as file:
-    data = json.load(file)
-    url = "https://" + data["backendURL"]
+    try:
+        data = json.load(file)
+        url = "https://" + data["backendURL"]
+    except:
+        url = "http://localhost:3000"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
