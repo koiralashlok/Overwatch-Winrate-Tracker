@@ -10,7 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import json
 from pathlib import Path
+
+# TODO Firefox can’t establish a connection to the server at <my_url>:3000/ws.
+# TODO warning in the console on ngrok page
+url = ""
+with open('../secrets.json', 'r') as file:
+    data = json.load(file)
+    url = "https://" + data["backendURL"]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,8 +61,10 @@ MIDDLEWARE = [
 ]
 
 # CORS configs
+# do not add a `/` at the end!!
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Allow requests from React frontend
+    "http://localhost:3000",
+    url,
 ]
 CORS_ALLOW_CREDENTIALS = True
 
