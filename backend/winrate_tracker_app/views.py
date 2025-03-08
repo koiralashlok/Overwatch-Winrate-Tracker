@@ -1,12 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from winrate_tracker_app.src import dummy as wt
-from django.http import JsonResponse
 import datetime
 
 def ping_frontend(request):
     return JsonResponse({
         "ts": f"{datetime.datetime.now()}",
-        "message": "Hello from Django at"
+        "message": "Hello from Django!"
     })
 
 def index(request):
