@@ -5,11 +5,11 @@ function App() {
     const [myTs, setTs] = useState("")
 
     useEffect(() => {
-      fetch("http://127.0.0.1:8000/tracker/ping_frontend")
+      fetch("http://127.0.0.1:8000/tracker/ping_frontend/1")
           .then((res) => res.json())
           .then(({ message, ts }) => {
-              setMsg(message);  // Use message
-              setTs(ts);   // Use ts (or set it in state if needed)
+              setMsg(message);
+              setTs(ts);
           });
   }, []);
   
