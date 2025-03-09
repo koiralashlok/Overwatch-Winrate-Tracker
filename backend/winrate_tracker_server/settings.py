@@ -91,6 +91,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "winrate_tracker_server.wsgi.application"
 
+# Caching for currently CSV db
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis running locally on port 6379
+        'TIMEOUT': 3600,  # Cache timeout in seconds (1 hour)
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
