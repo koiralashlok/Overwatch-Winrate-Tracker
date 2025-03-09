@@ -1,5 +1,5 @@
 import pandas as pd
-import etl.perform_etl as etl
+import winrate_tracker_app.src.etl.perform_etl as etl
 
 WIN = 'win'
 LOSS = 'loss'
@@ -7,8 +7,11 @@ LOSS = 'loss'
 global WINRATE_DF
 global PATH
 
-def readWinrateData():
+def readWinrateData(path=None):
     global WINRATE_DF
+
+    if path:
+        WINRATE_DF = pd.read_csv(path)
 
     WINRATE_DF = pd.read_csv(PATH)
 
