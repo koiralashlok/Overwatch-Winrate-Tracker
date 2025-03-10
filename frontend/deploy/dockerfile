@@ -1,22 +1,32 @@
 # Frontend Dockerfile
 
-# Use an official Node runtime as a parent image
-FROM node:16-slim
+# Use a Node.js base image
+FROM node:16 AS build
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
-COPY package*.json /app/
+# Copy package.json and package-lock.json (if available)
+COPY ./frontend/package*.json /app/
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application files
-COPY . /app/
+# Copy the rest of the frontend code
+COPY ./frontend /app/
 
-# Expose the port React will run on
-EXPOSE 3000
+# Build the React app
+RUN npm run build
 
-# Run the React development server
-CMD ["npm", "start"]
+# Final image setup to serve the built app
+FROM nginx:alpine
+
+# Copy the built frontend into the Nginx container
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose the default port
+EXPOSE 80
+
+# Nginx will serve the built React app
+CMD ["nginx", "-g", "daemon off;"]
+
