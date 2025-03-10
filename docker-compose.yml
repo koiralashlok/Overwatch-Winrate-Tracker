@@ -18,6 +18,7 @@ services:
     #   - .env
 
   frontend:
+    context: ./frontend
     build: ./frontend/deploy
     networks:
       - frontend_network
