@@ -18,8 +18,9 @@ services:
     #   - .env
 
   frontend:
-    context: ./frontend
-    build: ./frontend/deploy
+    build:
+      context: ./frontend
+      dockerfile: deploy/Dockerfile
     networks:
       - frontend_network
     ports:
