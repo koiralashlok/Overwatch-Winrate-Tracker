@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend/deploy
+    build: 
+      context: ./backend
+      dockerfile: deploy/Dockerfile
     networks:
       - backend_network
     expose:
