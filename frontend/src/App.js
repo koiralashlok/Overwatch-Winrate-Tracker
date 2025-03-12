@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
+import secretsJson from './frontend-secrets.json';
 
 function App() {
   const [msg, setMsg] = useState("");
   const [payload, setPayload] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/tracker/get_winrate_data_by_id/1")
+    // TODO replace w terraform!
+    let backend_url = secretsJson.backend_url
+
+    if(backend_url === "accelerando"){
+      backend_url = "http://localhost/8000"
+    }
+
+    fetch(backend_url+"/tracker/get_winrate_data_by_id/1")
       .then((res) => res.json())
       .then(({ message, payloadType, payload }) => {
         setMsg(message);
