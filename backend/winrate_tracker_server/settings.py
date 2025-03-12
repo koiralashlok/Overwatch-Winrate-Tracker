@@ -13,19 +13,18 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import json
 from pathlib import Path
 
-# TODO Firefox can’t establish a connection to the server at <my_url>:3000/ws.
-# TODO warning in the console on ngrok page
-url = ""
-with open('../secrets.json', 'r') as file:
-    try:
-        data = json.load(file)
-        url = "https://" + data["backendURL"]
-    except:
-        url = "http://localhost:3000"
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# TODO Firefox can’t establish a connection to the server at <my_url>:3000/ws.
+# TODO warning in the console on ngrok page
+url = ""
+try:
+    with open(BASE_DIR / 'backend-secrets.json', 'r') as file:
+        data = json.load(file)
+        url = "https://" + data["backendURL"]
+except:
+        url = "http://localhost:3000"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/

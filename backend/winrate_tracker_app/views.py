@@ -8,11 +8,10 @@ import datetime
 import zlib
 import pickle
 import json
+from pathlib import Path
 
 # TODO use rel path!!
-with open('../secrets.json', 'r') as file:
-    data = json.load(file)
-    DB_PATH = data["db_path"]
+DB_PATH = Path(__file__).resolve().parent.parent / 'winrate.csv'
 
 # TODO can these be project wide global variables like env vars or something maybe in secrets idk
 CACHE_TIMEOUT_DURATION = 3600 # seconds
@@ -23,10 +22,10 @@ FAILED_RESPONSE = {
         }
 WINRATE_CACHE_PREFIX = 'winrate_data_'
 
-def __compress_and_cache__(df: pd.DataFrame, cache_key: str):
+def _compress_and_cache(df: pd.DataFrame, cache_key: str):
     cache.set(cache_key, zlib.compress(pickle.dumps(df)), timeout=CACHE_TIMEOUT_DURATION)
 
-def __decompress_cached_data__(compressed_df: bytes) -> pd.DataFrame: 
+def _decompress_cached_data(compressed_df: bytes) -> pd.DataFrame: 
     return pickle.loads(zlib.decompress(compressed_df))
 
 @api_view(['GET'])
@@ -60,9 +59,9 @@ def get_winrate_data_by_id(request, id):
     # if not compressed_winrate_data:
     #     winrate_data = pd.read_csv(DB_PATH)
     #     # TODO pull out data for "id" here, cahce only that!
-    #     __compress_and_cache__(winrate_data, winrate_cache_key)
+    #     _compress_and_cache(winrate_data, winrate_cache_key)
     # else:
-    #     winrate_data = __decompress_cached_data__(compressed_winrate_data)
+    #     winrate_data = _decompress_cached_data(compressed_winrate_data)
     
     # Update response to send
     response["message"] = f"winrate data for id={id}"
@@ -77,7 +76,7 @@ def update_db(request, id):
     updated_winrate_data = pd.DataFrame()
     winrate_cache_key = WINRATE_CACHE_PREFIX + id
     # TODO join the updated row with the whole df and write
-    # __compress_and_cache__(updated_winrate_data, winrate_cache_key)
+    # _compress_and_cache(updated_winrate_data, winrate_cache_key)
     pass
 
 def index(request):
