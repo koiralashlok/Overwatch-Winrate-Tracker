@@ -64,10 +64,10 @@ MIDDLEWARE = [
 
 # CORS configs
 # do not add a `/` at the end!!
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    url,
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     url,
+# ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
