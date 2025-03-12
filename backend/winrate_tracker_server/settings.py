@@ -68,13 +68,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     url,
     "http://3.101.59.229",
-    "3.101.59.229"
-    "3.101.59.229:3000",
-    "http://3.101.59.229:3000"
+    "http://3.101.59.229:3000",
+    "https://3.101.59.229",
+    "https://3.101.59.229:3000"
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_HEADERS = ["*"]
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_HEADERS = ["*"]
 
 ROOT_URLCONF = "winrate_tracker_server.urls"
 
