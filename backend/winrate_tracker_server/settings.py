@@ -70,6 +70,7 @@ MIDDLEWARE = [
 # ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = ["*"]
 
 ROOT_URLCONF = "winrate_tracker_server.urls"
 
