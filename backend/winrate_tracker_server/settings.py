@@ -16,8 +16,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# TODO Firefox can’t establish a connection to the server at <my_url>:3000/ws.
-# TODO warning in the console on ngrok page
+# TODO add to terraform
 url = ""
 try:
     with open(BASE_DIR / 'backend-secrets.json', 'r') as file:
@@ -35,6 +34,7 @@ SECRET_KEY = "django-insecure-i$9&1h17x_k@jr9z7(@7_b3!$+emdfp(f+4yj@j&=m^3o++$x1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# TODO add to terraform
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "3.101.59.229",
@@ -68,8 +68,10 @@ MIDDLEWARE = [
 
 # CORS configs
 # do not add a `/` at the end!!
+# TODO add to terraform
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://127.1.0.0:3000",
     url,
     "http://3.101.59.229",
     "http://3.101.59.229:3000",
@@ -77,8 +79,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://3.101.59.229:3000"
 ]
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_HEADERS = ["*"]
 
 ROOT_URLCONF = "winrate_tracker_server.urls"
 

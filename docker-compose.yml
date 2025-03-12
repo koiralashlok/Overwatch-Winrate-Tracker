@@ -15,15 +15,10 @@ services:
     networks:
       - frontend_network
     ports:
-      - "3000:3000"  # Exposes React on port 80 (public access)
-    environment:
-      - REACT_APP_API_URL=http://backend:8000  # Backend API URL (communicates via Docker network)
-
+      - "3000:3000"
+  
 networks:
   frontend_network:
     driver: bridge
   backend_network:
     driver: bridge
-
-volumes:
-  postgres_data:

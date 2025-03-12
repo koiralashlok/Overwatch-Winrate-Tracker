@@ -63,7 +63,7 @@ def get_winrate_data_by_id(request, id):
     # else:
     #     winrate_data = _decompress_cached_data(compressed_winrate_data)
     
-    # Update response to send
+    # Update response to send   
     response["message"] = f"winrate data for id={id}"
     response["payload_type"] = f"{type(winrate_data)}"
     response["payload"] = winrate_data # TODO can we send df or does it need to be a dict
