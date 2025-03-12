@@ -10,7 +10,7 @@ function App() {
     let backend_url = secretsJson.backend_url
 
     if(backend_url === "accelerando"){
-      backend_url = "http://localhost/8000"
+      backend_url = "http://localhost:8000"
     }
 
     fetch(backend_url+"/tracker/get_winrate_data_by_id/1")
