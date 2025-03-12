@@ -19,8 +19,6 @@ function App() {
       });
   }, []);
 
-  console.log(payload);
-
   return (
     <>
       <h1>{msg}</h1>
