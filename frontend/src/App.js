@@ -29,7 +29,8 @@ function App() {
 
   return (
     <>
-      <h1>{msg}</h1>
+      <h1>Shlok's Winrate Tracker</h1>
+      <p>Viewing {msg}</p>
       <table>
         <thead>
           <tr>
