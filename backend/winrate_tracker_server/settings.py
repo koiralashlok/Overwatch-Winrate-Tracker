@@ -17,28 +17,28 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # TODO add to terraform
-url = ""
+ec2_ip = ""
 try:
     with open(BASE_DIR / 'backend-secrets.json', 'r') as file:
         data = json.load(file)
-        url = "https://" + data["backendURL"]
+        ec2_ip = data["ec2Ip"]
 except:
-        url = "http://localhost:3000"
+        ec2_ip = "http://localhost:3000"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# TODO SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-i$9&1h17x_k@jr9z7(@7_b3!$+emdfp(f+4yj@j&=m^3o++$x1"
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# TODO SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 # TODO add to terraform
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "3.101.59.229",
-    "localhost"
+    "localhost",
+    ec2_ip
     ]
 
 
@@ -72,11 +72,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.1.0.0:3000",
-    url,
-    "http://3.101.59.229",
-    "http://3.101.59.229:3000",
-    "https://3.101.59.229",
-    "https://3.101.59.229:3000"
+    f"http://{ec2_ip}",
+    f"http://{ec2_ip}:3000",
+    f"https://{ec2_ip}",
+    f"https://{ec2_ip}:3000"
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ["*"]
