@@ -14,7 +14,7 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "ssm_backend_url" {
+variable "ssm_backend_url_key" {
   description = "SSM parameter name for backend URL"
   type        = string
   default     = "/ow_winrate_tracker/backend_url"
