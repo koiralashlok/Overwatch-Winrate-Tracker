@@ -11,19 +11,33 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import json
+import os
+from dotenv import load_dotenv
 from pathlib import Path
+from aws_utils import AWSUtils
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# TODO add to terraform
-ec2_ip = ""
-try:
-    with open(BASE_DIR / 'backend-secrets.json', 'r') as file:
+# Build env file
+# If secrets exist, don't go to AWS param store
+secrets_file = BASE_DIR / '../backend-secrets.json'
+if not os.path.isfile(secrets_file):
+    utils = AWSUtils()
+    ec2_ip = utils.get_ssm_parameter('/ow_winrate_tracker/backend_url')
+else:
+    with open(secrets_file, 'r') as file:
         data = json.load(file)
-        ec2_ip = data["ec2Ip"]
-except:
-        ec2_ip = "http://localhost:3000"
+        ec2_ip = data["EC2_IP"]
+
+# Write to env file and load it
+with open(BASE_DIR / '.env', 'w') as be_env:
+    be_env.writelines(f'EC2_IP="{ec2_ip}"')
+load_dotenv()
+
+# Create env file for FE
+with open(BASE_DIR.parent / "frontend/.env", "w") as fe_env:
+    fe_env.writelines(f"REACT_APP_BACKEND_URL=http://{ec2_ip}:8000/tracker")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -67,8 +81,8 @@ MIDDLEWARE = [
 ]
 
 # CORS configs
-# do not add a `/` at the end!!
-# TODO add to terraform
+# Do not add a `/` at the end!!
+# TODO cleaup
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.1.0.0:3000",
