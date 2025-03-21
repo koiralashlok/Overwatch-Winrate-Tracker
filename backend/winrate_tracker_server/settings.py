@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Build env file
 # If secrets exist, don't go to AWS param store
-secrets_file = BASE_DIR / '../backend-secrets.json'
+secrets_file = BASE_DIR / 'backend-secrets.json'
 if not os.path.isfile(secrets_file):
     utils = AWSUtils()
     ec2_ip = utils.get_ssm_parameter('/ow_winrate_tracker/backend_url')
