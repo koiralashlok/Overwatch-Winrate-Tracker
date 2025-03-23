@@ -10,34 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import json
 import os
-from dotenv import load_dotenv
 from pathlib import Path
-from aws_utils import AWSUtils
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Build env file
-# If secrets exist, don't go to AWS param store
-secrets_file = BASE_DIR / 'backend-secrets.json'
-if not os.path.isfile(secrets_file):
-    utils = AWSUtils()
-    ec2_ip = utils.get_ssm_parameter('/ow_winrate_tracker/backend_url')
-else:
-    with open(secrets_file, 'r') as file:
-        data = json.load(file)
-        ec2_ip = data["EC2_IP"]
-
-# Write to env file and load it
-with open(BASE_DIR / '.env', 'w') as be_env:
-    be_env.writelines(f'EC2_IP="{ec2_ip}"')
-load_dotenv()
-
-# Create env file for FE
-with open(BASE_DIR.parent / "frontend/.env", "w") as fe_env:
-    fe_env.writelines(f"REACT_APP_BACKEND_URL=http://{ec2_ip}:8000/tracker")
+EC2_IP = os.environ.get("EC2_IP")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -52,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    ec2_ip
+    EC2_IP
 ]
 
 
@@ -86,10 +64,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.1.0.0:3000",
-    f"http://{ec2_ip}",
-    f"http://{ec2_ip}:3000",
-    f"https://{ec2_ip}",
-    f"https://{ec2_ip}:3000"
+    f"http://{EC2_IP}",
+    f"http://{EC2_IP}:3000",
+    f"https://{EC2_IP}",
+    f"https://{EC2_IP}:3000"
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ["*"]
