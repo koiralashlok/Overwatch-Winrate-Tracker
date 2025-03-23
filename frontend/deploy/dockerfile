@@ -1,9 +1,9 @@
 # Frontend Dockerfile
 FROM node:22 AS build
 
-WORKDIR /app
+WORKDIR /frontend
 
-COPY ./package*.json /app/
+COPY ./package*.json /frontend/
 
 RUN npm install
 

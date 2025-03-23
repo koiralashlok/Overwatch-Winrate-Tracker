@@ -1,14 +1,14 @@
 # Backend Dockerfile
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /backend
 
-COPY ./requirements.txt /app/
+COPY ./requirements.txt /backend/
 
 # Install any dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /app/
+COPY . /backend/
 
 # Expose the port that the backend will run on
 EXPOSE 8000
