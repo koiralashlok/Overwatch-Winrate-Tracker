@@ -41,7 +41,7 @@ function WinratePage(props: { backend_url: string }) {
       <Typography variant="h3" align="center" sx={{ mt: 4 }}>
         Winrate Data for Player {playerId}
       </Typography>
-      {payload.length != 0 && <WinrateTable data={payload} />}
+      {payload.length !== 0 && <WinrateTable data={payload} />}
       {!payload.length && (
         <Typography variant="h6" align="center" sx={{ mt: 4 }}>
           Could not fetch winrate data!
