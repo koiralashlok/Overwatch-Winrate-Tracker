@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ../backend/
-pip install pathlib
-python create_env_files.py
+sudo pip install pathlib
+sudo python3 create_env_files.py
 cd ..
-docker-compose up --build -d
+sudo docker-compose up --build -d
