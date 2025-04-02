@@ -4,3 +4,10 @@ resource "aws_ssm_parameter" "backend_url" {
   value = aws_instance.backend[0].public_ip
   overwrite = true
 }
+
+resource "aws_ssm_parameter" "debug_mode" {
+  name  = var.ssm_debug_mode_key
+  type  = "String"
+  value = false
+  overwrite = true
+}

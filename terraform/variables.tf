@@ -1,7 +1,3 @@
-data "aws_instances" "running_instances" {
-  instance_state_names = ["running"]
-}
-
 variable "aws_region" {
   description = "AWS region"
   type        = string
@@ -21,9 +17,20 @@ variable "ssm_backend_url_key" {
   sensitive   = true
 }
 
+variable "ssm_debug_mode_key" {
+  description = "SSM parameter name for debug mode"
+  type        = string
+  default     = false
+}
+
 variable "ssh_key_name" {
   description = "SSH key name"
   type        = string
+  sensitive   = true
+}
+
+data "aws_instances" "running_instances" {
+  instance_state_names = ["running"]
 }
 
 data "aws_ssm_parameter" "ami_id" {
