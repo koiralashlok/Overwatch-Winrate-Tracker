@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import WinrateTable from "../components/WinrateTable.tsx";
 import { Typography } from "@mui/material";
+import Layout from "./Layout.tsx";
 
 type WinrateData = {
   map: string;
@@ -37,7 +38,7 @@ function WinratePage(props: { backend_url: string }) {
   }, [props.backend_url]);
 
   return (
-    <>
+    <Layout>
       <Typography variant="h3" align="center" sx={{ mt: 4 }}>
         Winrate Data for Player {playerId}
       </Typography>
@@ -47,7 +48,7 @@ function WinratePage(props: { backend_url: string }) {
           Could not fetch winrate data!
         </Typography>
       )}
-    </>
+    </Layout>
   );
 }
 
